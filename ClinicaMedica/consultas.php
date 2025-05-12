@@ -54,7 +54,7 @@ if ($resPaciente->num_rows > 0) {
                         <th>Data</th>
                         <th>CRM</th>
                         <th>Diagnóstico</th>
-                        <th>Valor</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>";
