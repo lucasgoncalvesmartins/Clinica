@@ -1,0 +1,116 @@
+
+DELIMITER //
+
+CREATE TRIGGER trg_consultas_insert
+AFTER INSERT ON consultas
+FOR EACH ROW
+BEGIN
+    INSERT INTO log (usuario, acao, tabela_afetada, detalhes)
+    VALUES (
+        @usuario_logado, 'INSERT', 'consultas',
+        CONCAT('Consulta ID: ', NEW.id_consulta, ', Médico CRM: ', NEW.CRM, ', Paciente ID: ', NEW.id_paciente)
+    );
+END;
+
+//
+
+CREATE TRIGGER trg_consultas_update
+AFTER UPDATE ON consultas
+FOR EACH ROW
+BEGIN
+    INSERT INTO log (usuario, acao, tabela_afetada, detalhes)
+    VALUES (
+        @usuario_logado, 'UPDATE', 'consultas',
+        CONCAT('Consulta ID: ', NEW.id_consulta, ' atualizada. Médico CRM: ', NEW.CRM, ', Paciente ID: ', NEW.id_paciente)
+    );
+END;
+//
+
+CREATE TRIGGER trg_consultas_delete
+AFTER DELETE ON consultas
+FOR EACH ROW
+BEGIN
+    INSERT INTO log (usuario, acao, tabela_afetada, detalhes)
+    VALUES (
+        @usuario_logado, 'DELETE', 'consultas',
+        CONCAT('Consulta ID: ', OLD.id_consulta, ' deletada. Médico CRM: ', OLD.CRM, ', Paciente ID: ', OLD.id_paciente)
+    );
+END;
+//
+
+
+
+CREATE TRIGGER trg_medicamentos_insert
+AFTER INSERT ON medicamentos
+FOR EACH ROW
+BEGIN
+    INSERT INTO log (usuario, acao, tabela_afetada, detalhes)
+    VALUES (
+        @usuario_logado, 'INSERT', 'medicamentos',
+        CONCAT('Medicamento ID: ', NEW.id, ', Nome: ', NEW.nome)
+    );
+END;
+//
+
+CREATE TRIGGER trg_medicamentos_update
+AFTER UPDATE ON medicamentos
+FOR EACH ROW
+BEGIN
+    INSERT INTO log (usuario, acao, tabela_afetada, detalhes)
+    VALUES (
+        @usuario_logado, 'UPDATE', 'medicamentos',
+        CONCAT('Medicamento ID: ', NEW.id, ' atualizado. Nome: ', NEW.nome)
+    );
+END;
+//
+
+CREATE TRIGGER trg_medicamentos_delete
+AFTER DELETE ON medicamentos
+FOR EACH ROW
+BEGIN
+    INSERT INTO log (usuario, acao, tabela_afetada, detalhes)
+    VALUES (
+        @usuario_logado, 'DELETE', 'medicamentos',
+        CONCAT('Medicamento ID: ', OLD.id, ' deletado. Nome: ', OLD.nome)
+    );
+END;
+//
+
+
+CREATE TRIGGER trg_prescricoes_insert
+AFTER INSERT ON prescricoes
+FOR EACH ROW
+BEGIN
+    INSERT INTO log (usuario, acao, tabela_afetada, detalhes)
+    VALUES (
+        @usuario_logado, 'INSERT', 'prescricoes',
+        CONCAT('Prescrição ID: ', NEW.id_prescricao, ', Consulta ID: ', NEW.id_consulta, ', Medicamento ID: ', NEW.id_medicamento)
+    );
+END;
+//
+
+CREATE TRIGGER trg_prescricoes_update
+AFTER UPDATE ON prescricoes
+FOR EACH ROW
+BEGIN
+    INSERT INTO log (usuario, acao, tabela_afetada, detalhes)
+    VALUES (
+        @usuario_logado, 'UPDATE', 'prescricoes',
+        CONCAT('Prescrição ID: ', NEW.id_prescricao, ' atualizada. Consulta ID: ', NEW.id_consulta, ', Medicamento ID: ', NEW.id_medicamento)
+    );
+END;
+//
+
+CREATE TRIGGER trg_prescricoes_delete
+AFTER DELETE ON prescricoes
+FOR EACH ROW
+BEGIN
+    INSERT INTO log (usuario, acao, tabela_afetada, detalhes)
+    VALUES (
+        @usuario_logado, 'DELETE', 'prescricoes',
+        CONCAT('Prescrição ID: ', OLD.id_prescricao, ' deletada. Consulta ID: ', OLD.id_consulta, ', Medicamento ID: ', OLD.id_medicamento)
+    );
+END;
+//
+
+DELIMITER ;

@@ -1,0 +1,60 @@
+
+CREATE TABLE medicos (
+    CRM VARCHAR(20) PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    especialidade VARCHAR(50),
+    telefone VARCHAR(20)
+) ENGINE=InnoDB;
+
+
+CREATE TABLE pacientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    CPF VARCHAR(11) UNIQUE,
+    historico TEXT,
+    telefone VARCHAR(20),
+    data_nascimento DATE,
+    senha VARCHAR(8)	
+) ENGINE=InnoDB;
+
+
+CREATE TABLE medicamentos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    tipo VARCHAR(50),
+    uso VARCHAR(255)
+) ENGINE=InnoDB;
+
+CREATE TABLE consultas (
+    id_consulta INT AUTO_INCREMENT PRIMARY KEY,
+    CRM VARCHAR(20),
+    id_paciente INT,
+    diagnostico TEXT,
+    data_hora DATETIME,
+    status VARCHAR(20),
+    FOREIGN KEY (CRM) REFERENCES medicos(CRM) ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id) ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+
+CREATE TABLE prescricoes (
+    id_prescricao INT AUTO_INCREMENT PRIMARY KEY,
+    id_consulta INT,
+    CRM VARCHAR(20),
+    id_paciente INT,
+    id_medicamento INT,
+    quantidade INT,
+    FOREIGN KEY (id_consulta) REFERENCES consultas(id_consulta),
+    FOREIGN KEY (CRM) REFERENCES medicos(CRM) ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY (id_medicamento) REFERENCES medicamentos(id) ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE log (
+    id_log INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(100),
+    acao VARCHAR(50),
+    tabela_afetada VARCHAR(50),
+    data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
+    detalhes TEXT
+) ENGINE=InnoDB;
